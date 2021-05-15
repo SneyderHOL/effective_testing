@@ -1,0 +1,9 @@
+example_id                   | status | run_time        |
+---------------------------- | ------ | --------------- |
+./spec/coffee_spec.rb[1:1]   | passed | 0.00061 seconds |
+./spec/coffee_spec.rb[1:2:1] | passed | 0.00184 seconds |
+./spec/slow_spec.rb[1:1]     | passed | 0.10034 seconds |
+./spec/slow_spec.rb[1:2]     | passed | 0.20059 seconds |
+./spec/slow_spec.rb[1:3]     | passed | 0.30063 seconds |
+./spec/slow_spec.rb[1:4]     | passed | 0.40081 seconds |
+./spec/slow_spec.rb[1:5]     | passed | 0.50079 seconds |
