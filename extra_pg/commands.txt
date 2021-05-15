@@ -1,0 +1,24 @@
+# Starting pg client
+=# superuser
+=> regular user
+psql -U username
+\l					# list databases
+
+# create user and a database
+CREATE USER testing_user WITH PASSWORD 'my_password';		# create role
+CREATE DATABASE people WITH OWNER 'testing_user';		# create database
+\q     		       	    	  	# quit
+
+# Connecting to a database
+psql people testing_user
+\dt					# show tables
+
+# Create a table
+CREATE TABLE users(
+  name VARCHAR(128),
+  email VARCHAR(128)
+);
+
+# the schema is our contract with postgress that says this table's got two columns and
+# it's got two character columns and each of those columns is up to 128 chars long
+\d+ users				# show schema of table users
