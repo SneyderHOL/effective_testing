@@ -1,0 +1,86 @@
+The Rspec Way
+
+Makes habits easy:
+-Writing examples that clearly spell out the expected behavior of the code
+-Separating common setup code from actual test logic
+-Focusing on just what you need to do to make the next spec pass
+
+Comes with a cost:
+-Writing specs takes time
+-Running large suites takes time
+-Reading heavily factored specs requires hopping between setup and test code
+
+
+What Your Specs Are Doing For You
+Writing specs isn't the goal of using Rspec- it's the benefits those specs provide.
+
+Creating confidence
+A well-written spec can provide confidence in favor of certain claims about your code.
+
+-The "happy path" through a particular bit of code behaves the way you want it to
+-A method detecs and reacts to an error condition you're anticipating
+-That last feature you added didn't break the existing ones
+-You're making measurable progress through the project
+
+Eliminating fear
+With broad test coverage, developers find out early if new code is breaking existing features.
+
+Enabling refactoring
+Your understanding of the problem domain will improve as you discover new facts.
+To deal with changes, you'll need to refactor code.
+Our challenge as developers is to structure our projects so that big changes are easy and
+predictable.
+Your specs will help you, they provide a safety net and guard against regressions.
+
+Guiding desing
+A good suite of examples will guide the initial desing and will support the refactoring as
+your desing evolves.
+By surfacing the pain of a design problem early, specs allow you to fix it while it's
+cheap and easy to do so.
+
+Sustainability
+When your drive your code with RSpec, it may take a little extra time to build your first
+feature. With each feature you add, however, you'll gain consisten productivity.
+
+Documenting behavior
+Well-written specs document how your system is intended to behave.
+RSpec encourage you to write examples that make great documentation of behavior.
+Its library help you make it clear what code you're testing is supposed to do.
+
+Transforming your workflow
+Driving your design from your specs completely transform your workflow.
+Each run of your suit is an experiment you've design in order to validate a hypothesis
+about how the code behaves.
+
+It's fun
+Tackling a big problem all at once is hard and tends to give us a bad case of
+"programmers's block". TDD encourages us to break things down into small, achievable
+steps.
+
+
+Comparing Cost and Benefits
+BDD and RSpec can help you build good designs and build them quickly.
+
+Writing specs
+Every spec takes time to write. That is why so many habits to practice revolve around
+saving time.
+
+Running the entire suit
+Over the lifetime of a BDD project, your spec will run often. So velocity is a key
+aspect when executing tests.
+
+Getting feedback from a single example
+There is a huge difference between waiting less than a second for an example to run
+and wait for several seconds or even multiple minutes. Once you've seen specs that give
+you near-instant-feedback as you type anything slower will feel like unbearable
+interruption to your train of thought.
+
+Dealing with failure
+Failure is a good thing. A failing spec points to the behavior thar your recent change
+broke. However, it does cost time and energy to track down the source of the failure.
+By writing precise RSpec expectation that describe exactly the behavior you are looking
+for, you keep your spec from becoming brittle.
+
+Don't over do it
+Balance between sufficient test suites and overtesting.
+Not all tests are worth the effort it takes to write and maintain them.
