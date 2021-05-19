@@ -2,16 +2,28 @@
 =# superuser
 => regular user
 psql -U username
+
+psql commands:
+
 \l					# list databases
+\q     		       	    	  	# quit
+\dt					# show tables
+# the schema is our contract with postgress that says this table's got two columns and
+# it's got two character columns and each of those columns is up to 128 chars long
+\d+ users				# show schema of table users
+\i filename				# import a file .sql
+
+
+# Connecting to a database SHELL CMD
+psql people testing_user
+
 
 # create user and a database
 CREATE USER testing_user WITH PASSWORD 'my_password';		# create role
 CREATE DATABASE people WITH OWNER 'testing_user';		# create database
-\q     		       	    	  	# quit
 
-# Connecting to a database
-psql people testing_user
-\dt					# show tables
+# connect to postgres
+psql --host=localhost --dbname=people --username=testing_user
 
 # Create a table
 CREATE TABLE users(
@@ -19,6 +31,127 @@ CREATE TABLE users(
   email VARCHAR(128)
 );
 
-# the schema is our contract with postgress that says this table's got two columns and
-# it's got two character columns and each of those columns is up to 128 chars long
-\d+ users				# show schema of table users
+# The INSERT statement inserts a row into a table
+INSERT INTO table_name (column1, column2) VALUES ('value1', 'value2');
+
+# Deletes a row in a table based on selection criteria
+DELETE FROM table_name WHERE column='value';
+
+# Deletes all rows in a table
+DELTE FROM table_name;
+
+# Allows the updating of a field with a WHERE clause
+# update every record where WHERE clause is true
+UPDATE table_name SET column='value' WHERE column='value';
+
+# Allows the updating of a field on all records
+UPDATE table_name SET column='value';
+
+# Retrieves a group of records - you can either retrieve all the records or a
+# subset of the records with a WHERE clause
+SELECT * FROM table_name;
+SELECT * FROM table_name WHERE column='value';
+
+# You can add an ORDER BY clause to SELECT statements to get the results
+# sorted in ascending (ASC default) or descending order(DESC)
+SELECT * FROM table_name ORDER BY column;
+SELECT * FROM table_name ORDER BY column DESC;
+
+# We can do wildcard matching in a WHERE clause using the LIKE operator
+SELECT * FROM table_name WHERE column LIKE '%value%';
+
+# % used to represent zero, one or many characters or numbers
+# % used to represent one character or number
+# expresion = column, pattern = value in ''
+expression LIKE pattern [ESCAPE 'escape-character']
+# if escape character is not provided \ by default
+
+# NOT operator is used in combination with LIKE
+... WHERE NOT LIKE 'value%';
+
+# ILIKE match case-insensitive
+# ~~ = LIKE, ~~* = ILIKE, !~~ = NOT LIKE, !~~* NOT ILIKE
+# check for -> SIMILAR TO, and substring()
+
+# LIMIT/OFFSET clauses
+# We can request the first "n" rows, or the first "n" rows after skipping some rows
+# The WHERE clause and ORDER BY clauses happen *before* the LIMIT/OFFSET are applied
+# The OFFSET starts from row 0 //skip ahead a certain amount
+SELECT * FROM table_name ORDER BY column DESC LIMIT #;
+SELECT * FROM table_name ORDER BY column OFFSET # LIMIT #;
+
+# You can requet to receive the count of the rows that would be retrieved instead
+# of the rows
+SELECT COUNT(*) FROM table_name;
+SELECT COUNT(*) FROM table_name WHERE column='value';
+
+DATA TYPES
+
+Text fields (small and large)
+Binary fields (small and large)
+Numeric fields
+AUTO_INCREMENT field
+
+String fields
+# CHAR max lenght is 128 VARCHAR max legnth is about 65k characters (65535 kb)
+- Understand character sets and are indexable for searching
+- CHAR(n) allocates the entire space (faster for small string where length is known)
+- VARCHAR(n) allocates a variable amount of space depending on the data length (less space)
+
+Text fields
+- Have a character set-paragraph or HTML pages
+ -TEXT vaying length
+- Generally not used with index or sorting - and only then limited to a prefix
+
+CHAR, VARCHAR, TEXT have character set(not symply eight-bit characters)
+
+Binary Types(rarely used)
+-Character = 8 - 32 bits of information depending on character set
+-Byte = 8 bits of information
+ -BYTEA(n) up to 255 bytes
+-Small images - data
+-Not indexed or sorted
+
+Integer Numbers
+Are very efficient, take little storage, and are easy to process because CPUs can often compare them with a single instruction
+
+-SMALLINT(-32768, +32768)
+-INTEGER(2 billion)
+-BIGINT(10**18 ish)
+
+Floating Point Numbers
+Can represent a wide range of values, but accuracy is limited
+-REAL(32 bit) 10**38 with seven digits of accuracy
+-DOUBLE PRECISION(64 bit) 10**308 with 14 digits of accuracy
+-NUMERIC(accuracy, decimal) - Specified digits of accuracy and digits after the decimal point
+
+Dates
+-TIMESTAMP - 'YYYY-MM-DD HH:MM:SS' (4713 BC, 294276 AD)
+-DATE - 'YYYY-MM-DD'
+-TIME - 'HH:MM:SS'
+-Built in PostgreSQL function NOW()
+
+INDEXES
+
+AUTO_INCREMENT
+Often as we make multiple tables and need to JOIN them together we need an integer primary key for each row so we can efficiently add a reference to a row in some other table as a foreign key.
+Use of SERIAL ex: id SERIAL
+Use of UNIQUE in a VARCHAR is a logical key
+
+PostgreSQL Funtions
+Many operation in PostgreSQL need to use the built-in functions(like NOW() for dates)
+
+https://www.postgresql.org/docs/{version_number}/functions.html
+
+Indexes
+-There are techniques to greatly shorten the scan as long as you create data structures and maintain those structures - like shortcuts
+
+-Hashes or Trees are the most common (B-trees)
+
+Summary
+-SQL allows us to describe the shape of data to be stored and give many hints to the database engine as how we will be accessing or using the data.
+-SQL is a language that provides us operation to CRUD our data in a database.
+
+
+# Importing a csv file to a table in postgresql
+\copy table_name(column_names comma separated aka headers) FROM 'file path' WITH DELIMITER 'specify delimiter char aka comma {,}' CSV;
