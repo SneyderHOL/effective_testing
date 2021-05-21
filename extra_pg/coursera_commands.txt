@@ -108,7 +108,7 @@ CHAR, VARCHAR, TEXT have character set(not symply eight-bit characters)
 Binary Types(rarely used)
 -Character = 8 - 32 bits of information depending on character set
 -Byte = 8 bits of information
- -BYTEA(n) up to 255 bytes
+-BYTEA(n) up to 255 bytes
 -Small images - data
 -Not indexed or sorted
 

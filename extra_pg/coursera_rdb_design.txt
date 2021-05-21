@@ -1,0 +1,88 @@
+Drawing a picture of a your data and then you translate that picture into a set of databases commands and shapes to create it.
+
+Data model - the soul of an application
+
+Building a Data Model
+- Drawing a picture of the data objects for our application and then figuring out how to represent the objects and their relationships.
+
+- Basic rule: Don't put the same string data in twice - use a relationship instead.
+
+- When there is one thing in the "real world" there should only be one copy of that thing in the database.
+
+For each "piece of info" ...
+- Is the column an object or an attribute of another object?
+- Once we define objects, we need to define the relationships between objects.
+
+Three kinds of keys
+- Primary key - generally an integer auto-increment field
+- Logical key - what the outside world uses for lookup
+- Foreing key - generally an integer key pointing to a row in another table
+
+Primary key rules
+Best practices:
+- Never use your logical key as the primary key.
+- Logical keys can and do change, albeit slowly.
+- Relationships that are based on matching string fields are less efficient than integers.
+
+Foreing keys
+- Is when a table has a column containing a key that points to the primary key of another table.
+- When all primary keys are integers, then all foreign keys are integers. This is good.
+
+Normalization and foreign keys
+
+Database Normalization (3NF)
+There is 'ton' of database theory.
+- Do not replicate data. Instead, reference data. Point at data.
+- Use integers for keys and for references.
+- Add a special 'key' column to each table, which you will make references to.
+
+Integer reference pattern
+We use integer columns in one table to reference (or look up) rows in another table.
+
+Building a physical data schema
+- Table, columns(attributes), keys(primary, logica, foreign)
+
+Inserting normalized data
+Building a table
+
+Creating our Music Database
+
+$ sudo -u postgres psql postgres
+
+=# CREATE DATABASE music WITH OWNER 'pg4e' ENCODING 'UTF8';
+
+CREATE TABLE artist (id SERIAL, name VARCHAR(128) UNIQUE, PRIMARY KEY(id));
+CREATE TABLE album (id SERIAL, title VARCHAR(128) UNIQUE, artist_id INTEGER REFERENCES artist(id) ON DELETE CASCADE, PRIMARY KEY(id));
+CREATE TABLE genre (id SERIAL, name VARCHAR(128) UNIQUE, PRIMARY KEY(id));
+CREATE TABLE track (id SERIAL, title VARCHAR(128), len INTEGER, rating INTEGER, count INTEGER, album_id INTEGER REFERENCES album(id) ON DELETE CASCADE, genre_id INTEGER REFERENCES genre(id) ON DELETE CASCADE, UNIQUE(title, album_id), PRIMARY KEY(id));
+
+Inserting data
+INSERT INTO artist (name) VALUES ('Led Zeppelin');
+INSERT INTO artist (name) VALUES ('AC/DC');
+INSERT INTO album (title, artist_id) VALUES ('Who Made Who', 2);
+INSERT INTO album (title, artist_id) VALUES ('IV', 1);
+INSERT INTO genre (name) VALUES ('Rock');
+INSERT INTO genre (name) VALUES ('Metal');
+INSERT INTO track (title, rating, len, count, album_id, genre_id) VALUES ('Black Dog', 5, 297, 0, 2, 1);
+INSERT INTO track (title, rating, len, count, album_id, genre_id) VALUES ('Stairway', 5, 482, 0, 2, 1);
+INSERT INTO track (title, rating, len, count, album_id, genre_id) VALUES ('About to Rock', 5, 313, 0, 1, 2);
+INSERT INTO track (title, rating, len, count, album_id, genre_id) VALUES ('Who Made Who', 5, 207, 0, 1, 2);
+
+Using JOIN across tables
+Relational power
+- By removing the replicated data and replacing it with references to a single copy of each bit of data, we build a "web" of information that the relational database can read through very quickly - even for very large amounts of data.
+- Often when you want some data it comes from a number of tables linked by these foreign keys.
+
+The JOIN operation
+- Links across several tables as part of a SELECT operation
+- You must tell the JOIN how to use the keys that make the connection between the tables using ON clause.
+
+INNER JOIN
+means take the things that match
+CROSS JOIN
+means join everything
+
+ON DELETE Choices
+- Default / RESTRICT - Don't allow changes that break the constraint
+- CASCADE - Adjust child rows by removing or updating to maintain consistency
+- SET NULL - Set the foreign key columns in the child rows to null
