@@ -28,19 +28,15 @@ With broad test coverage, developers find out early if new code is breaking exis
 Enabling refactoring
 Your understanding of the problem domain will improve as you discover new facts.
 To deal with changes, you'll need to refactor code.
-Our challenge as developers is to structure our projects so that big changes are easy and
-predictable.
+Our challenge as developers is to structure our projects so that big changes are easy and predictable.
 Your specs will help you, they provide a safety net and guard against regressions.
 
-Guiding desing
-A good suite of examples will guide the initial desing and will support the refactoring as
-your desing evolves.
-By surfacing the pain of a design problem early, specs allow you to fix it while it's
-cheap and easy to do so.
+Guiding design
+A good suite of examples will guide the initial design and will support the refactoring as your design evolves.
+By surfacing the pain of a design problem early, specs allow you to fix it while it's cheap and easy to do so.
 
 Sustainability
-When your drive your code with RSpec, it may take a little extra time to build your first
-feature. With each feature you add, however, you'll gain consisten productivity.
+When your drive your code with RSpec, it may take a little extra time to build your first feature. With each feature you add, however, you'll gain consistent productivity.
 
 Documenting behavior
 Well-written specs document how your system is intended to behave.
@@ -49,38 +45,69 @@ Its library help you make it clear what code you're testing is supposed to do.
 
 Transforming your workflow
 Driving your design from your specs completely transform your workflow.
-Each run of your suit is an experiment you've design in order to validate a hypothesis
-about how the code behaves.
+Each run of your suit is an experiment you've design in order to validate a hypothesis about how the code behaves.
 
 It's fun
-Tackling a big problem all at once is hard and tends to give us a bad case of
-"programmers's block". TDD encourages us to break things down into small, achievable
-steps.
+Tackling a big problem all at once is hard and tends to give us a bad case of "programmers's block". TDD encourages us to break things down into small, achievable steps.
 
 
 Comparing Cost and Benefits
 BDD and RSpec can help you build good designs and build them quickly.
 
 Writing specs
-Every spec takes time to write. That is why so many habits to practice revolve around
-saving time.
+Every spec takes time to write. That is why so many habits to practice revolve around saving time.
 
 Running the entire suit
-Over the lifetime of a BDD project, your spec will run often. So velocity is a key
-aspect when executing tests.
+Over the lifetime of a BDD project, your spec will run often. So velocity is a key aspect when executing tests.
 
 Getting feedback from a single example
-There is a huge difference between waiting less than a second for an example to run
-and wait for several seconds or even multiple minutes. Once you've seen specs that give
-you near-instant-feedback as you type anything slower will feel like unbearable
-interruption to your train of thought.
+There is a huge difference between waiting less than a second for an example to run and wait for several seconds or even multiple minutes. Once you've seen specs that give you near-instant-feedback as you type anything slower will feel like unbearable interruption to your train of thought.
 
 Dealing with failure
-Failure is a good thing. A failing spec points to the behavior thar your recent change
-broke. However, it does cost time and energy to track down the source of the failure.
-By writing precise RSpec expectation that describe exactly the behavior you are looking
-for, you keep your spec from becoming brittle.
+Failure is a good thing. A failing spec points to the behavior thar your recent change broke. However, it does cost time and energy to track down the source of the failure.
+By writing precise RSpec expectation that describe exactly the behavior you are looking for, you keep your spec from becoming brittle.
 
 Don't over do it
 Balance between sufficient test suites and overtesting.
 Not all tests are worth the effort it takes to write and maintain them.
+A test that can't pay for itself shouldn't be in your suit any more.
+
+Deciding what not to test
+Every behavior you specify in a test is another point of coupling between your tests and your project code.
+Sometimes it's better to decide intentionally not to test certain things.
+If you do need  to drive a UI from automated tests, try to test in terms of your problem domain ('log in as an administrator') rather than implementation details ('type admin@example.com into the third text field').
+Another key place to show restrain is the level of details in your tests assertions. Instead of asserting an exact message, consider using a substring. Likewise, don't specify the exact order of a collection unless the order is important.
+
+
+Different Types of Specs
+
+Our goal as developers is to write specs that maximize the values listed here (guiding design, building confidence, and so on), while minimizing the time lost to writing, running, and fixing them.
+Every spec has a job to do. These jobs fall into different categories: catching regressions in an app, guiding the desing of a signle class or method, etc.
+There could be many categories for tests, the recommended is focusing on just a few different, well-defined types of specs. That way, you'll end up intentionally picking what to write at any given moment, based on the benefit you're pursuing.
+
+Acceptance specs
+Describe a feature in an end-to-end, black-box style that exercise the entire system. Hard to write, brittle and slow. But they provide a great level of confidence taht the parts of the system are working together as a whole.
+
+Unit specs
+Focus on individual units of code (single object or method). Check the behavior of a piece fo code relative to the environment you construct for it.
+Are fast, their isolated, focused nature provides immediately useful design feedback, and their independent nature makes them less likely to interfere with one another in a large suit.
+
+Integration specs
+Sit somewhere between acceptance and unit tests. Code that interacts with an external service (db, third party REST API) should have an integration spec.
+A strick interpretation of these definitions would require you to separate your unit and integration specs as follows:
+ - Your unit specs would have to isolate your code from any third-party dependency.
+ - Your(comparatively slow) integration specs would be allowed to hit third-party code indirectly.
+
+If ruby class depends on samll, fast libraries that don't hit the network and don't have side effects, it's probably okay to call them as is from your units specs.
+Integration specs are often an order of magnitude slower than unit specs. It's recomended to run integration specs when you modify the code they cover.
+
+Guidelines
+Integration specs are harder to write than unit specs, and they run more slowly. Therefore, we prefer to write fewer integration specs and more unit specs.
+For this, we need to keep our interfaces to external resources small and well defined. That way, we only have to write a few integration specs for these interfaces. Our faster unit specs can easily substitute fake versions of the interfaces.
+For many projects, the highest-value specs are also the ones that cost the most.
+End-to-end acceptance specs provide the best refactoring support. Because they only use your code's public interfaces, they don't depend on implementation details.
+Unit specs help with low-level refacoring such as reimplementing a specific method.
+
+Accpetance specs' refactoring support comes at a price. They are more difficult to write, more brittle and slower than other specs. But they provide so much confidence that it's important to have them -we just write a few of them, focus on happy path, and don't use them for exhaustive coverage of conditional branches.
+
+-Think about your goal for the spec you're about to write, that will guide you naturally toward which type to use-
