@@ -1,0 +1,16 @@
+Data types
+- Boolean - True or False
+- Character - char, varchar and text
+- Numeric - integer and floating-point number
+- Temporal - date, time, timestamp and interval
+
+- UUID - universally unique identifiers
+- ARRAY - stores an array of strings, numbers, etc.
+- JSON
+- Hstore Key-value pair
+- SPecial types such as network address and geometric data.
+
+
+Table properties
+Primary keys
+Foreign keys

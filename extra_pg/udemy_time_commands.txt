@@ -1,0 +1,38 @@
+SHOW ALL
+
+Timestamp functions
+SHOW TIMEZONE
+
+SELECT NOW()
+
+SELECT TIMEOFDAY()
+
+SELECT CURRENT_TIME
+
+SELECT CURRENT_DATE
+
+
+How to extract information from time based data types
+EXTRACT() - Allow you to extract or obtain a sub-component of a date value
+(sub-component: YEAR, MONTH, DAY, WEEK, QUARTER)
+AGE() - Calculates and return the current age given a timestamp
+TO_CHAR() - function to convert data types to text
+
+Usage:
+EXTRACT(YEAR FROM date_col)
+AGE(date_col)
+TO_CHAR(date_col, 'mm-dd-yyyy')
+
+https://www.postgresql.org/docs/12/functions-formatting.html
+
+Mathematical function
+https://www.postgresql.org/docs/12/functions-math.html
+
+String function and operator
+https://www.postgresql.org/docs/12/functions-string.html
+LOWER()
+UPPER()
+|| - concatenation
+LEFT(col, #) - gets the first # characters
+
+
