@@ -14,3 +14,95 @@ Data types
 Table properties
 Primary keys
 Foreign keys
+
+Constraints
+-Constraint are rules enforced on data columns on table.
+-These are used to prevent invalid data from being entered into the database.
+-This ensures the accuracy and reliability of the data in the database.
+
+2 categories
+-Column constraints:
+ -constrains the data in a column to adhere to certain conditions.
+-Table constraints:
+ -applied to the entire table rather than to an individual column.
+
+most commons:
+column constraints:
+NOT NULL
+UNIQUE
+PRIMARY KEY
+FOREIGN KEY
+CHECK - ensures that all values in a column satisfy certain conditions.
+EXCLUSION - ensures that if any two rows are compared on the specified column or expression using the specified operator, not all of these comparison will return TRUE.
+
+table constraints:
+CHECK(condition) - check a condition when inserting or updating
+REFERENCES - to constrain the value stored in the column that must exist in a column in another table
+UNIQUE(column_list) - forces the values stored in the columns listed inside the parentheses to be unique.
+PRIMARY KEY(column_list) - allows you to define the primary key that consist of multiple columns
+
+
+CREATE
+CREATE TABLE table_name(
+  column_name TYPE column_constraint,
+  column_name TYPE column_constraint,
+  table_constraint table_constraint
+) INHERITS existing_table_name;
+
+common simple syntax
+
+INSERT
+INSERT INTO table(column1, column2,...) VALUES (value1, value2, ...), (value1, value2, ...);
+INSERT INTO table(column1, column2,...) SELECT (column1, column2,...) FROM another_table WHERE condition;
+
+UPDATE
+UPDATE table SET column1 = value1, column2 = value2, ... WHERE condition;
+
+update join
+UPDATE tableA SET original_col = tableB.new_col FROM tableB WHERE tableA.id = tableB.id;
+
+return affected rows
+UPDATE table SET column1 = value
+RETURNING column1, column2;
+
+DELETE
+DELETE FROM table WHERE row_id = 1;
+DELETE FROM tableA USING tableB WHERE tableA.id = tableB.id;
+DELETE FROM table;
+DELETE FROM table WHERE row_id = 1 RETURNING col1, col2;
+
+ALTER clause
+Allows for changes to an existence table structure, such as:
+-Adding, dropping or renaming columns
+-Changing a column's data type
+-Set DEFAULT values for a column
+-Add CHECK cosntraint
+-Rename table
+
+General syntax
+ALTER TABLE table_name action;
+ALTER TABLE table_name ADD COLUMN new_col type;
+ALTER TABLE table_name DROP COLUMN col_name;
+ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;
+ALTER TABLE table_name ALTER COLUMN col_name DROP DEFAULT;
+ALTER TABLE table_name ALTER COLUMN col_name DROP NOT NULL;
+ALTER TABLE table_name ALTER COLUMN col_name ADD CONSTRAINT constraint_name;
+ALTER TABLE table_name RENAME TO new_table_name;
+ALTER TABLE table_name RENAME COLUMN col_name TO new_col_name;
+
+DROP keyword
+-allows for the complete removal of a column in a table
+-allows also automatically remove all of its indexes and constraints involving the column
+-it will not remove columns used in views, triggers, or stored procedures without the additional CASCADE clause
+
+ALTER TABLE table_name DROP COLUMN col_name;
+ALTER TABLE table_name DROP COLUMN col_name CASCADE;
+ALTER TABLE table_name DROP COLUMN IF EXISTS col_name;
+ALTER TABLE table_name DROP COLUMN col1_name, DROP COLUMN col2_name;
+
+CHECK
+-allows us to create more customized constraint that adhere to a certain condition.
+-such as making sure all inserted integer values fall below a certain threshold.
+General syntax
+-CREATE TABLE example(ex_id SERIAL PRIMARY KEY, age SMALLINT CHECK(age > 21), parent_age SMALLINT CHECK(parent_age > age));
+
