@@ -106,3 +106,121 @@ CHECK
 General syntax
 -CREATE TABLE example(ex_id SERIAL PRIMARY KEY, age SMALLINT CHECK(age > 21), parent_age SMALLINT CHECK(parent_age > age));
 
+
+KEYWORDS
+CASE, COALESCE, NULLIF, CAST, Views, Import and Export Functionality
+
+CASE
+statement to only execute SQL code when certain conditions are met.
+Very similar to IF/ELSE statements in other programming languages.
+
+Usage: general CASE, or a CASE expression, both lead to the same result.
+general syntax:
+CASE
+  WHEN condition1 THEN result1
+  WHEN condition2 THEN result2
+  ELSE some_other_result
+END
+
+example:
+SELECT a,
+CASE WHEN a = 1 THEN 'one'
+     WHEN a = 2 THEN 'two'
+ELSE 'other'
+END AS alias
+FROM test;
+
+expression syntax:
+first evaluates an expression then compares the result with each value in the WHEN clauses sequentially.
+CASE expression
+  WHEN value1 THEN result1
+  WHEN value2 THEN result2
+  ELSE some_other_result
+END
+
+example:
+SELECT a,
+CASE a
+  WHEN 1 THEN 'one'
+  WHEN 2 THEN 'two'
+  ELSE 'other'
+END
+FROM test;
+
+
+COALESCE
+function that accepts an unlimited number of arguments. It returns the first argument that is not null. If all arguments are null, the COALESCE function will return null.
+ - COALESCE(arg_1, arg_2, ..., arg_n)
+
+example:
+ -COALESCE(1,2)
+ -1
+ -COALESE(NULL, 2, 3)
+ -2
+
+the function become useful when querying a table that contains null values and substituting it with another value.
+example:
+Table of products
+ - Price and discounts in Dollars
+Item	     	       Price			Discount
+A		       100			20
+B		       300			NULL
+C		       200			10
+What is the final price?
+SELECT item, (price - COALESCE(discount, 0)) AS final FROM products;
+
+
+CAST
+let's you convert from one data type into another.
+it must be reasonable to convert the data. '5' to int will work, 'five' to int will not.
+
+syntax for CAST function
+SELECT CAST('5' AS INTEGER)
+
+PostgreSQL CAST operator
+SELECT '5'::INTEGER
+
+example:
+SELECT CAST(date AS TIMESTAMP) FROM table;
+
+
+NULLIF
+function that takes in 2 inputs and return NULL if both are equal, otherwise it returns the first argument passed.
+example:
+NULLIF(10,10)
+-NULL
+NULLIF(10,12)
+-10
+
+example:
+# depts table, where 2 people lives in A and 0 lives in B
+SELECT (
+SUM(CASE WHEN department = 'A' THEN 1 ELSE 0 END) /
+	NULLIF(
+SUM(CASE WHEN department = 'B' THEN 1 ELSE 0 END), 0)
+) AS department_ratio
+FROM depts;
+
+
+VIEWS
+
+You can create a VIEW to quickly see the query that is a specific combination of tables and conditions that you use quite often.
+Is a database object that is of a stored query, can be accessed as a virtual table in PostgreSQL, does not store data physically, it simply stores the query.
+
+Ex:
+CREATE VIEW view_name AS
+SELECT column1, column2 FROM table1 JOIN table2 USING column3;
+
+#update view
+CREATE OR REPLACE VIEW view_name AS ... query...;
+#delete view
+DROP VIEW view_name;
+DROP VIEW IF EXISTE view_name;
+#rename view
+ALTER VIEW view_name RENAME TO view_new_name;
+#using it like a table
+SELECT * FROM view_name;
+
+IMPORT/EXPORT  - COPY
+postgresql.org/docs/12/sql-copy.html
+

@@ -157,7 +157,8 @@ Summary
 \copy table_name(column_names comma separated aka headers) FROM 'file path' WITH DELIMITER 'specify delimiter char aka comma {,}' CSV;
 
 
-INTERMEDIATE
+# INTERMEDIATE POSTGRESQL
+
 CREATE TABLE account(
    id SERIAL,
    email VARCHAR(128) UNIQUE,
@@ -264,3 +265,17 @@ Performance: Table Scans
 SELECT id, content, created_at FROM comment
  WHERE created_at::DATE = NOW()::DATE;
 
+
+DISTINCT / GROUP BY
+DISTINCT - only returns unique rows in a result set- and row will only appear once
+DISTINCT ON - limits duplicate removal to a set of columns
+GROUP BY - is combined with aggregate functions.
+HAVING - is like a where clause after the GROUP BY, where you can use aggregate functions in the condition
+
+
+SUBQUERIES
+A query within a query - can use a value or set of values in a query that are computed by another query
+
+without subqueries there's a change that the database might be able to optimize it instead of using subqueries where we expressing procedurally by making steps.
+
+CONCURRENCY
